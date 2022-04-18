@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { Category as CategoryDTO } from './dto/category'
 import { Category } from './category.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -10,7 +9,7 @@ export class CategoryService {
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>
   ) {}
-  async findAll(): Promise<CategoryDTO[]> {
+  async findAll(): Promise<Category[]> {
     return this.categoryRepository.find()
   }
 }
