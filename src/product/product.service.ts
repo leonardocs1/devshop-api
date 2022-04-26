@@ -15,11 +15,11 @@ export class ProductService {
   }
 
   async findById(id: string): Promise<Product> {
-    return this.productRepository.findOne(id)
+    return this.productRepository.findOne(id, { loadRelationIds: true })
   }
 
   async findAll(): Promise<Product[]> {
-    return this.productRepository.find()
+    return this.productRepository.find({ loadRelationIds: true })
   }
 
   async update(input: Product): Promise<Product> {
