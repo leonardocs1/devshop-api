@@ -18,6 +18,10 @@ export class ProductService {
     return this.productRepository.findOne(id, { loadRelationIds: true })
   }
 
+  async findBySlug(slug: string): Promise<Product> {
+    return this.productRepository.findOne({ where: [{ slug }] })
+  }
+
   async findAll(): Promise<Product[]> {
     return this.productRepository.find({ loadRelationIds: true })
   }
