@@ -19,7 +19,9 @@ type Product {
 type Query {
   getAllCategories: [Category!]!
   getCategoryById(id: String!): Category!
+  getCategoryBySlug(slug: String!): Category!
   getProductById(id: String!): Product!
+  getProductBySlug(slug: String!): Product!
   getAllProducts: [Product!]!
 }
 

@@ -17,6 +17,13 @@ export class ProductResolver {
     )
   }
 
+  @Query(returns => ProductPublic, { name: 'getProductBySlug' })
+  async getProductBySlug(@Args('slug') slug: string): Promise<ProductPublic> {
+    return ProductMapper.fromEntityToPublic(
+      await this.productService.findBySlug(slug)
+    )
+  }
+
   @Query(returns => [ProductPublic], { name: 'getAllProducts' })
   async getAllProducts(): Promise<ProductPublic[]> {
     const products = await this.productService.findAll()
