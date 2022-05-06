@@ -29,7 +29,7 @@ type Query {
   getProductById(id: String!): Product!
   getProductBySlug(slug: String!): Product!
   getAllProducts: [Product!]!
-  getAllBradies: [Brand!]!
+  getAllBrands: [Brand!]!
   getBrandById(id: String!): Brand!
   getBrandBySlug(slug: String!): Brand!
 }
@@ -42,6 +42,7 @@ type Mutation {
   updateProduct(input: ProductUpdateInput!): Product!
   deleteProduct(id: String!): Boolean!
   createBrand(input: BrandCreateInput!): Brand!
+  uploadBrandLogo(input: String!): Brand!
   updateBrand(input: BrandUpdateInput!): Brand!
   deleteBrand(id: String!): Boolean!
 }

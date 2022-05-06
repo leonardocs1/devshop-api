@@ -8,8 +8,8 @@ import { BrandUpdateInput } from './dto/brand-update.input'
 @Resolver(of => BrandPublic)
 export class BrandResolver {
   constructor(private readonly brandService: BrandService) {}
-  @Query(returns => [BrandPublic], { name: 'getAllBradies' })
-  async getAllBradies(): Promise<BrandPublic[]> {
+  @Query(returns => [BrandPublic], { name: 'getAllBrands' })
+  async getAllBrands(): Promise<BrandPublic[]> {
     return await this.brandService.findAll()
   }
 
@@ -28,6 +28,11 @@ export class BrandResolver {
     @Args('input') input: BrandCreateInput
   ): Promise<BrandPublic> {
     return this.brandService.create(BrandMapper.toEntity(input))
+  }
+
+  @Mutation(returns => BrandPublic, { name: 'uploadBrandLogo' })
+  async uploadLogo(@Args('input') input: string): Promise<BrandPublic> {
+    return this.brandService.uploadLogo(input)
   }
 
   @Mutation(returns => BrandPublic, { name: 'updateBrand' })
