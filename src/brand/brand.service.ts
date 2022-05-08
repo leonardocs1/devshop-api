@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { Brand } from './brand.entity'
-import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { s3 } from 'src/utils/s3'
 import * as fs from 'fs'
+import { InjectRepository } from '@nestjs/typeorm'
 
 @Injectable()
 export class BrandService {
@@ -29,14 +29,19 @@ export class BrandService {
     return this.brandRepository.save(input)
   }
 
-  async uploadLogo(input: string): Promise<Brand> {
-    const stream = fs.createReadStream('./teste.png')
+  async uploadLogo(
+    id: string,
+    createReadStream: () => any,
+    filename: string,
+    mimetype: string
+  ): Promise<Brand> {
+    const stream = createReadStream()
     await this.s3.upload(
-      'test.png',
+      filename,
       stream,
-      'image/png',
+      mimetype,
       'devshop-storage',
-      'test.png'
+      id + '-' + filename
     )
     return null
   }

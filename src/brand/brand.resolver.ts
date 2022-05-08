@@ -4,6 +4,7 @@ import { BrandService } from './brand.service'
 import { BrandPublic } from './dto/brand'
 import { BrandCreateInput } from './dto/brand-create.input'
 import { BrandUpdateInput } from './dto/brand-update.input'
+import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
 @Resolver(of => BrandPublic)
 export class BrandResolver {
@@ -30,9 +31,15 @@ export class BrandResolver {
     return this.brandService.create(BrandMapper.toEntity(input))
   }
 
-  @Mutation(returns => BrandPublic, { name: 'uploadBrandLogo' })
-  async uploadLogo(@Args('input') input: string): Promise<BrandPublic> {
-    return this.brandService.uploadLogo(input)
+  @Mutation(returns => Boolean, { name: 'uploadBrandLogo' })
+  async uploadLogo(
+    @Args('id') id: string,
+    @Args('file', { type: () => GraphQLUpload })
+    file: FileUpload
+  ): Promise<boolean> {
+    const { createReadStream, filename, mimetype } = await file
+    await this.brandService.uploadLogo(id, createReadStream, filename, mimetype)
+    return true
   }
 
   @Mutation(returns => BrandPublic, { name: 'updateBrand' })
