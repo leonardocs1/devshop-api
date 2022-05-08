@@ -34,16 +34,19 @@ export class BrandService {
     createReadStream: () => any,
     filename: string,
     mimetype: string
-  ): Promise<Brand> {
+  ): Promise<boolean> {
     const stream = createReadStream()
-    await this.s3.upload(
+    const url = await this.s3.upload(
       filename,
       stream,
       mimetype,
       'devshop-storage',
       id + '-' + filename
     )
-    return null
+    await this.brandRepository.update(id, {
+      logo: url
+    })
+    return true
   }
 
   async update(input: Brand): Promise<Brand> {
