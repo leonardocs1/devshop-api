@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { Brand } from './brand.entity'
 import { Repository } from 'typeorm'
 import { s3 } from 'src/utils/s3'
-import * as fs from 'fs'
 import { InjectRepository } from '@nestjs/typeorm'
+import * as sharp from 'sharp'
 
 @Injectable()
 export class BrandService {
@@ -35,9 +35,8 @@ export class BrandService {
     filename: string,
     mimetype: string
   ): Promise<boolean> {
-    const stream = createReadStream()
+    const stream = createReadStream().pipe(sharp().resize(300))
     const url = await this.s3.upload(
-      filename,
       stream,
       mimetype,
       'devshop-storage',

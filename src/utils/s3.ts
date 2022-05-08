@@ -11,13 +11,11 @@ export class s3 {
     })
   }
   async upload(
-    filename: string,
-    stream: any,
+    stream: NodeJS.ReadStream,
     mimetype: string,
     bucket: string,
     destinationFilename: string
   ): Promise<string> {
-    console.log(filename)
     const s3 = new aws.S3()
     const s3Params = {
       Bucket: bucket,
