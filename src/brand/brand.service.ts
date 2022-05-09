@@ -35,6 +35,14 @@ export class BrandService {
     filename: string,
     mimetype: string
   ): Promise<boolean> {
+    const brand = await this.brandRepository.findOne(id)
+    if (!brand) {
+      return false
+    }
+    if (brand.logo) {
+      const filename = brand.logo.split('.com/')[1]
+      await this.s3.deleteObject('devshop-storage', filename)
+    }
     const stream = createReadStream().pipe(sharp().resize(300))
     const url = await this.s3.upload(
       stream,
@@ -68,6 +76,14 @@ export class BrandService {
 
   async delete(id: string): Promise<boolean> {
     try {
+      const brand = await this.brandRepository.findOne(id)
+      if (!brand) {
+        return false
+      }
+      if (brand.logo) {
+        const filename = brand.logo.split('.com/')[1]
+        await this.s3.deleteObject('devshop-storage', filename)
+      }
       await this.brandRepository.delete(id)
       return true
     } catch (err) {
