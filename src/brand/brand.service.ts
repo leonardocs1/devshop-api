@@ -48,6 +48,16 @@ export class BrandService {
     return true
   }
 
+  async removeBrandLogo(id: string): Promise<boolean> {
+    const brand = await this.brandRepository.findOne(id)
+    const filename = brand.logo.split('.com/')[1]
+    await this.s3.deleteObject('devshop-storage', filename)
+    await this.brandRepository.update(brand.id, {
+      logo: null
+    })
+    return true
+  }
+
   async update(input: Brand): Promise<Brand> {
     await this.brandRepository.update(input.id, {
       name: input.name,
