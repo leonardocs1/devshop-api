@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { User } from './user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { AuthToken } from './authtoken.entity'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(AuthToken)
+    private authRepository: Repository<AuthToken>
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -26,10 +29,14 @@ export class UserService {
     return this.userRepository.save(input)
   }
 
-  async auth(email: string, passwd: string): Promise<User> {
+  async auth(email: string, passwd: string): Promise<[User, AuthToken]> {
     const user = await this.userRepository.findOne({ where: { email } })
     if (user && (await user.checkPassword(passwd))) {
-      return user
+      const authToken = new AuthToken()
+      authToken.user = user
+      const token = await this.authRepository.save(authToken)
+      console.log(token)
+      return [user, token]
     }
     return null
   }
