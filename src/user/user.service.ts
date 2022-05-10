@@ -26,6 +26,14 @@ export class UserService {
     return this.userRepository.save(input)
   }
 
+  async auth(email: string, passwd: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } })
+    if (user && (await user.checkPassword(passwd))) {
+      return user
+    }
+    return null
+  }
+
   async update(input: User): Promise<User> {
     const entity = await this.userRepository.findOne(input.id)
     entity.name = input.name
