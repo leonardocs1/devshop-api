@@ -25,7 +25,7 @@ export class UserResolver {
 
   @Mutation(returns => UserPublic, { name: 'updateUser' })
   async updateUser(@Args('input') input: UserUpdateInput): Promise<UserPublic> {
-    return this.userService.update(UserMapper.toEntity(input))
+    return this.userService.update(UserMapper.toUpdateEntity(input))
   }
 
   @Mutation(returns => Boolean, { name: 'deleteUser' })

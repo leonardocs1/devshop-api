@@ -19,7 +19,7 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: [{ slug: email }] })
+    return this.userRepository.findOne({ where: [{ email: email }] })
   }
 
   async create(input: User): Promise<User> {
@@ -27,10 +27,13 @@ export class UserService {
   }
 
   async update(input: User): Promise<User> {
-    await this.userRepository.update(input.id, {
-      name: input.name,
-      email: input.email
-    })
+    const entity = await this.userRepository.findOne(input.id)
+    entity.name = input.name
+    entity.email = input.email
+    entity.passwd = input.passwd
+    entity.role = input.role
+
+    await this.userRepository.save(entity)
     return input
   }
 

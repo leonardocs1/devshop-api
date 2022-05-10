@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn
+} from 'typeorm'
+import * as bcrypt from 'bcrypt'
 
 @Entity()
 export class User {
@@ -17,12 +24,31 @@ export class User {
   @Column({ length: 450, nullable: false })
   role: string // root, user
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   lastLogin: Date
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   createdAt: Date
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   updatedAt: Date
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPasswd(): Promise<void> {
+    if (this.passwd) {
+      this.passwd = await bcrypt.hash(this.passwd, 10)
+    }
+  }
+
+  @BeforeInsert()
+  setCreatedDate(): void {
+    this.createdAt = new Date()
+    this.updatedAt = new Date()
+  }
+
+  @BeforeUpdate()
+  setUpdatedDate(): void {
+    this.updatedAt = new Date()
+  }
 }
