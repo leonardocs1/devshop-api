@@ -10,7 +10,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(AuthToken)
-    private authRepository: Repository<AuthToken>
+    private authTokenRepository: Repository<AuthToken>
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -34,11 +34,14 @@ export class UserService {
     if (user && (await user.checkPassword(passwd))) {
       const authToken = new AuthToken()
       authToken.user = user
-      const token = await this.authRepository.save(authToken)
-      console.log(token)
+      const token = await this.authTokenRepository.save(authToken)
       return [user, token]
     }
     return null
+  }
+
+  async getRefreshToken(id: string): Promise<AuthToken> {
+    return this.authTokenRepository.findOne(id, { relations: ['user'] })
   }
 
   async update(input: User): Promise<User> {
