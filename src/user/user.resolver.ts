@@ -7,6 +7,9 @@ import { UserUpdateInput } from './dto/user-update.input'
 import { AuthToken } from './dto/auth'
 import { JwtService } from '@nestjs/jwt'
 import { AuthUserInput } from './dto/auth-user.input'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from 'src/utils/jwt-auth.guard'
+import { AuthUserId } from 'src/utils/jwt-user-decorator'
 
 @Resolver(of => UserPublic)
 export class UserResolver {
@@ -85,5 +88,11 @@ export class UserResolver {
       return accessToken
     }
     return null
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(returns => UserPublic, { name: 'getMe' })
+  async getMe(@AuthUserId() id: string): Promise<UserPublic> {
+    return await this.userService.findById(id)
   }
 }
