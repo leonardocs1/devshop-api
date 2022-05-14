@@ -18,27 +18,32 @@ export class UserResolver {
     private readonly jwtService: JwtService
   ) {}
 
-  @Query(returns => [UserPublic], { name: 'getAllUsers' })
+  @UseGuards(AuthGuard)
+  @Query(returns => [UserPublic], { name: 'panelGetAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
     return await this.userService.findAll()
   }
 
-  @Query(returns => UserPublic, { name: 'getUserById' })
+  @UseGuards(AuthGuard)
+  @Query(returns => UserPublic, { name: 'panelGetUserById' })
   async getUserById(@Args('id') id: string): Promise<UserPublic> {
     return await this.userService.findById(id)
   }
 
-  @Mutation(returns => UserPublic, { name: 'createUser' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => UserPublic, { name: 'panelCreateUser' })
   async createUser(@Args('input') input: UserCreateInput): Promise<UserPublic> {
     return this.userService.create(UserMapper.toEntity(input))
   }
 
-  @Mutation(returns => UserPublic, { name: 'updateUser' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => UserPublic, { name: 'panelUpdateUser' })
   async updateUser(@Args('input') input: UserUpdateInput): Promise<UserPublic> {
     return this.userService.update(UserMapper.toUpdateEntity(input))
   }
 
-  @Mutation(returns => Boolean, { name: 'deleteUser' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelDeleteUser' })
   async deleteUser(@Args('id') input: string): Promise<boolean> {
     return this.userService.delete(input)
   }
@@ -91,7 +96,7 @@ export class UserResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(returns => UserPublic, { name: 'getMe' })
+  @Query(returns => UserPublic, { name: 'panelGetMe' })
   async getMe(@AuthUserId() id: string): Promise<UserPublic> {
     return await this.userService.findById(id)
   }

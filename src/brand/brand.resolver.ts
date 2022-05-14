@@ -12,7 +12,6 @@ import { AuthGuard } from 'src/utils/jwt-auth.guard'
 export class BrandResolver {
   constructor(private readonly brandService: BrandService) {}
 
-  @UseGuards(AuthGuard)
   @Query(returns => [BrandPublic], { name: 'getAllBrands' })
   async getAllBrands(): Promise<BrandPublic[]> {
     return await this.brandService.findAll()
@@ -28,14 +27,16 @@ export class BrandResolver {
     return await this.brandService.findBySlug(slug)
   }
 
-  @Mutation(returns => BrandPublic, { name: 'createBrand' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => BrandPublic, { name: 'panelCreateBrand' })
   async createBrand(
     @Args('input') input: BrandCreateInput
   ): Promise<BrandPublic> {
     return this.brandService.create(BrandMapper.toEntity(input))
   }
 
-  @Mutation(returns => Boolean, { name: 'uploadBrandLogo' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelUploadBrandLogo' })
   async uploadLogo(
     @Args('id') id: string,
     @Args('file', { type: () => GraphQLUpload })
@@ -50,21 +51,24 @@ export class BrandResolver {
     )
   }
 
-  @Mutation(returns => Boolean, { name: 'removeBrandLogo' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelRemoveBrandLogo' })
   async removeLogo(@Args('id') id: string): Promise<boolean> {
     return await this.brandService.removeBrandLogo(id)
   }
 
-  @Mutation(returns => BrandPublic, { name: 'updateBrand' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => BrandPublic, { name: 'panelUpdateBrand' })
   async updateBrand(
     @Args('input') input: BrandUpdateInput
   ): Promise<BrandPublic> {
     return BrandMapper.fromEntityToPublic(
-      await this.brandService.update(BrandMapper.toEntity(input))
+      await this.brandService.update(BrandMapper.fromUpdateToEntity(input))
     )
   }
 
-  @Mutation(returns => Boolean, { name: 'deleteBrand' })
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelDeleteBrand' })
   async deleteBrand(@Args('id') input: string): Promise<boolean> {
     return this.brandService.delete(input)
   }
