@@ -11,6 +11,7 @@ import { UseGuards } from '@nestjs/common'
 import { AuthGuard } from 'src/utils/jwt-auth.guard'
 import { AuthUserId } from 'src/utils/jwt-user-decorator'
 import { UserPassUpdateInput } from './dto/user-pass-update.input'
+import { AuthSession } from './dto/auth-session'
 
 @Resolver(of => UserPublic)
 export class UserResolver {
@@ -23,6 +24,12 @@ export class UserResolver {
   @Query(returns => [UserPublic], { name: 'panelGetAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
     return await this.userService.findAll()
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(returns => [UserPublic], { name: 'panelGetAllUserSessions' })
+  async getAllUserSessions(@Args('id') id: string): Promise<AuthSession[]> {
+    return await this.userService.findAllUserSessions(id)
   }
 
   @UseGuards(AuthGuard)

@@ -17,6 +17,10 @@ export class UserService {
     return this.userRepository.find()
   }
 
+  async findAllUserSessions(id: string): Promise<AuthToken[]> {
+    return this.authTokenRepository.find({ where: [{ user: id }] })
+  }
+
   async findById(id: string): Promise<User> {
     return this.userRepository.findOne(id)
   }
