@@ -50,9 +50,15 @@ export class UserService {
     entity.email = input.email
     entity.passwd = input.passwd
     entity.role = input.role
-
     await this.userRepository.save(entity)
     return input
+  }
+
+  async changePassword(id: string, newPasswd: string): Promise<boolean> {
+    const entity = await this.userRepository.findOne(id)
+    entity.passwd = newPasswd
+    await this.userRepository.save(entity)
+    return true
   }
 
   async delete(id: string): Promise<boolean> {
