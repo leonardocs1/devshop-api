@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import {
+  Args,
+  Context,
+  GraphQLExecutionContext,
+  Mutation,
+  Query,
+  Resolver
+} from '@nestjs/graphql'
 import { UserMapper } from './user.mapper'
 import { UserService } from './user.service'
 import { UserPublic } from './dto/user'
@@ -27,7 +34,7 @@ export class UserResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(returns => [UserPublic], { name: 'panelGetAllUserSessions' })
+  @Query(returns => [AuthSession], { name: 'panelGetAllUserSessions' })
   async getAllUserSessions(@Args('id') id: string): Promise<AuthSession[]> {
     return await this.userService.findAllUserSessions(id)
   }
@@ -71,10 +78,14 @@ export class UserResolver {
   }
 
   @Mutation(returns => AuthToken, { name: 'auth' })
-  async auth(@Args('input') input: AuthUserInput): Promise<AuthToken> {
+  async auth(
+    @Context() context: GraphQLExecutionContext,
+    @Args('input') input: AuthUserInput
+  ): Promise<AuthToken> {
     const [user, refreshToken] = await this.userService.auth(
       input.email,
-      input.passwd
+      input.passwd,
+      context['req']['headers']['user-agent']
     )
     if (user) {
       const authToken = new AuthToken()

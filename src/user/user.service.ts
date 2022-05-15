@@ -33,11 +33,16 @@ export class UserService {
     return this.userRepository.save(input)
   }
 
-  async auth(email: string, passwd: string): Promise<[User, AuthToken]> {
+  async auth(
+    email: string,
+    passwd: string,
+    userAgent: string
+  ): Promise<[User, AuthToken]> {
     const user = await this.userRepository.findOne({ where: { email } })
     if (user && (await user.checkPassword(passwd))) {
       const authToken = new AuthToken()
       authToken.user = user
+      authToken.userAgent = userAgent
       const token = await this.authTokenRepository.save(authToken)
       return [user, token]
     }
