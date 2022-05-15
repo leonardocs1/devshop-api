@@ -50,7 +50,12 @@ export class UserService {
   }
 
   async getRefreshToken(id: string): Promise<AuthToken> {
-    return this.authTokenRepository.findOne(id, { relations: ['user'] })
+    const refreshToken = await this.authTokenRepository.findOne(id, {
+      relations: ['user']
+    })
+    refreshToken.lastUsedAt = new Date()
+    await this.authTokenRepository.save(refreshToken)
+    return refreshToken
   }
 
   async update(input: User): Promise<User> {
