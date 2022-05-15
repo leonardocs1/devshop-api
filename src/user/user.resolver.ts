@@ -129,6 +129,12 @@ export class UserResolver {
   }
 
   @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelInvalidateUserSession' })
+  async invalidateUser(@Args('id') id: string): Promise<boolean> {
+    return this.userService.invalidateRefreshToken(id)
+  }
+
+  @UseGuards(AuthGuard)
   @Query(returns => UserPublic, { name: 'panelGetMe' })
   async getMe(@AuthUserId() id: string): Promise<UserPublic> {
     return await this.userService.findById(id)

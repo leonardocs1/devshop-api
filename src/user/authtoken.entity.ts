@@ -23,7 +23,7 @@ export class AuthToken {
   lastUsedAt: Date
 
   @Column({ type: 'boolean', nullable: true })
-  active: Boolean
+  active: boolean
 
   @Column({ nullable: true })
   userAgent: string
