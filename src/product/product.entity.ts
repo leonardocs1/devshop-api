@@ -18,4 +18,7 @@ export class Product {
   // Product N -> 1 Category
   @ManyToOne(type => Category, category => category.id)
   category: Category
+
+  @Column({ type: 'jsonb', nullable: true })
+  optionNames: string[]
 }
