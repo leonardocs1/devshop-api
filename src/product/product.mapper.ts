@@ -14,7 +14,9 @@ export class ProductMapper {
     const category = new Category()
     category.id = input.category
     entity.category = category
-    entity.optionNames = ['cor', 'tamanho']
+    entity.sku = input.sku
+    entity.price = input.price
+    entity.weight = input.weight
 
     entity.optionNames = ['cor', 'tamanho']
 

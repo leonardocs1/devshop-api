@@ -101,6 +101,9 @@ input ProductCreateInput {
   slug: String!
   category: String!
   description: String!
+  sku: String
+  price: Float
+  weight: Float
 }
 
 input ProductUpdateInput {
