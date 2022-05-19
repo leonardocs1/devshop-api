@@ -18,24 +18,10 @@ export class ProductMapper {
     entity.price = input.price
     entity.weight = input.weight
 
-    entity.optionNames = ['cor', 'tamanho']
+    entity.optionNames = input.optionNames
 
-    entity.variations = [
-      {
-        optionName1: 'vermelho',
-        optionName2: 'p',
-        sku: 'a',
-        price: 10,
-        weight: 0.5
-      },
-      {
-        optionName1: 'vermelho',
-        optionName2: 'azul',
-        sku: 'a',
-        price: 10,
-        weight: 0.5
-      }
-    ]
+    // TODO
+    entity.variations = input.variations
 
     return entity
   }
