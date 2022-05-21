@@ -76,4 +76,25 @@ export class ProductService {
     })
     return true
   }
+
+  async deleteImage(id: string, url: string): Promise<boolean> {
+    const product = await this.productRepository.findOne(id)
+    if (!product) {
+      return false
+    }
+    if (!product.images) {
+      product.images = []
+    }
+    const filenameParts = url.split('/')
+    const filename = filenameParts[filenameParts.length - 1]
+
+    await this.s3.deleteObject('devshop-storage', filename)
+    console.log('delete', url, filename)
+
+    product.images = product.images.filter(imgUrl => imgUrl !== url)
+    await this.productRepository.update(id, {
+      images: product.images
+    })
+    return true
+  }
 }

@@ -61,7 +61,7 @@ export class ProductResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(returns => Boolean, { name: 'panelUploadProductImage' })
-  async uploadLogo(
+  async uploadLogoProductImage(
     @Args('id') id: string,
     @Args('file', { type: () => GraphQLUpload })
     file: FileUpload
@@ -73,5 +73,14 @@ export class ProductResolver {
       filename,
       mimetype
     )
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean, { name: 'panelDeleteProductImage' })
+  async deleteProductImage(
+    @Args('id') id: string,
+    @Args('url') url: string
+  ): Promise<boolean> {
+    return this.productService.deleteImage(id, url)
   }
 }

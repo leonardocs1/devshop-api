@@ -73,6 +73,7 @@ type Mutation {
   panelUpdateProduct(input: ProductUpdateInput!): Product!
   panelDeleteProduct(id: String!): Boolean!
   panelUploadProductImage(id: String!, file: Upload!): Boolean!
+  panelDeleteProductImage(id: String!, url: String!): Boolean!
   panelCreateBrand(input: BrandCreateInput!): Brand!
   panelUploadBrandLogo(id: String!, file: Upload!): Boolean!
   panelRemoveBrandLogo(id: String!): Boolean!
