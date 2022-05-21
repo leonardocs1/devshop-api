@@ -14,6 +14,7 @@ type Product {
   slug: String
   description: String
   category: String
+  images: [String!]
 }
 
 type Brand {
@@ -71,6 +72,7 @@ type Mutation {
   panelCreateProduct(input: ProductCreateInput!): Product!
   panelUpdateProduct(input: ProductUpdateInput!): Product!
   panelDeleteProduct(id: String!): Boolean!
+  panelUploadProductImage(id: String!, file: Upload!): Boolean!
   panelCreateBrand(input: BrandCreateInput!): Brand!
   panelUploadBrandLogo(id: String!, file: Upload!): Boolean!
   panelRemoveBrandLogo(id: String!): Boolean!
@@ -124,13 +126,13 @@ input ProductUpdateInput {
   description: String!
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 input BrandCreateInput {
   name: String!
   slug: String!
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input BrandUpdateInput {
   id: String!
