@@ -17,6 +17,7 @@ export class ProductMapper {
     entity.sku = input.sku
     entity.price = input.price
     entity.weight = input.weight
+    entity.stock = input.stock
 
     entity.optionNames = input.optionNames
 
