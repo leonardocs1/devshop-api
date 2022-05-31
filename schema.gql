@@ -55,6 +55,8 @@ type Query {
   getProductById(id: String!): Product!
   getProductBySlug(slug: String!): Product!
   getAllProducts: [Product!]!
+  getAllProductsByCategory(categorySlug: String!): [Product!]!
+  getAllProductsByBrand(brandSlug: String!): [Product!]!
   getAllBrands: [Brand!]!
   getBrandById(id: String!): Brand!
   getBrandBySlug(slug: String!): Brand!

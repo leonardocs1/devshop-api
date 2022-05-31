@@ -1,3 +1,4 @@
+import { Brand } from 'src/brand/brand.entity'
 import { Category } from 'src/category/category.entity'
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 
@@ -30,6 +31,10 @@ export class Product {
   // Product N -> 1 Category
   @ManyToOne(type => Category, category => category.id)
   category: Category
+
+  // Product N -> 1 Brand
+  @ManyToOne(type => Brand, brand => brand.id)
+  brand: Brand
 
   @Column({ type: 'jsonb', nullable: true })
   optionNames: string[]

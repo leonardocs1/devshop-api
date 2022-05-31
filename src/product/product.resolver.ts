@@ -33,6 +33,22 @@ export class ProductResolver {
     return products.map(ProductMapper.fromEntityToPublic)
   }
 
+  @Query(returns => [ProductPublic], { name: 'getAllProductsByCategory' })
+  async getAllProductsByCategory(
+    @Args('categorySlug') categorySlug: string
+  ): Promise<ProductPublic[]> {
+    const products = await this.productService.findAllByCategory(categorySlug)
+    return products.map(ProductMapper.fromEntityToPublic)
+  }
+
+  @Query(returns => [ProductPublic], { name: 'getAllProductsByBrand' })
+  async getAllProductsByBrand(
+    @Args('brandSlug') brandSlug: string
+  ): Promise<ProductPublic[]> {
+    const products = await this.productService.findAllByBrand(brandSlug)
+    return products.map(ProductMapper.fromEntityToPublic)
+  }
+
   @UseGuards(AuthGuard)
   @Mutation(returns => ProductPublic, { name: 'panelCreateProduct' })
   async createProduct(

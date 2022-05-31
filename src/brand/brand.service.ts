@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { Brand } from './brand.entity'
 import { Repository } from 'typeorm'
-import { s3 } from 'src/utils/s3'
 import { InjectRepository } from '@nestjs/typeorm'
+import { s3 } from 'src/utils/s3'
 import * as sharp from 'sharp'
 
 @Injectable()
