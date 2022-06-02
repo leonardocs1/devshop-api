@@ -1,3 +1,4 @@
+import { Float } from '@nestjs/graphql'
 import { Brand } from 'src/brand/brand.entity'
 import { Category } from 'src/category/category.entity'
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
@@ -45,7 +46,7 @@ export class Product {
   @Column({ length: 250, nullable: true })
   sku: string
 
-  @Column({ nullable: true, type: 'money' })
+  @Column({ type: 'decimal', nullable: true })
   price: number
 
   @Column({ nullable: true, type: 'decimal' })

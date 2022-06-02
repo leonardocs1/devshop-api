@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, Float, ObjectType } from '@nestjs/graphql'
 
 @ObjectType('Product')
 export class ProductPublic {
@@ -16,6 +16,9 @@ export class ProductPublic {
 
   @Field({ nullable: true })
   category: string
+
+  @Field(type => Float, { nullable: true })
+  price: number
 
   @Field(type => [String], { nullable: true })
   images: string[]
