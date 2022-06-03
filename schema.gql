@@ -8,6 +8,15 @@ type Category {
   slug: String
 }
 
+type variation {
+  optionName1: String!
+  optionName2: String!
+  sku: String!
+  price: Float!
+  weight: Float!
+  stock: Int!
+}
+
 type Product {
   id: String
   name: String
@@ -16,6 +25,8 @@ type Product {
   category: String
   price: Float
   images: [String!]
+  optionNames: [String!]
+  variations: [variation!]
 }
 
 type Brand {
